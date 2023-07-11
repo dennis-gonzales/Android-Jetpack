@@ -1,8 +1,8 @@
-package com.example.mvvm
+package com.dnnsgnzls.mvvm
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.mvvm.ui.main.MainFragment
+import com.dnnsgnzls.mvvm.ui.main.MainFragment
 
 class MainActivity : AppCompatActivity() {
 

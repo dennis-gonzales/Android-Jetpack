@@ -1,4 +1,4 @@
-package com.example.mvvm.ui.main
+package com.dnnsgnzls.mvvm.ui.main
 
 import android.os.Bundle
 import android.util.Log
@@ -9,11 +9,9 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.CreationExtras
-import com.example.mvvm.MainActivity
-import com.example.mvvm.R
-import com.example.mvvm.models.Repository
-import com.example.mvvm.viewmodel.MainViewModel
+import com.dnnsgnzls.mvvm.R
+import com.dnnsgnzls.mvvm.models.Repository
+import com.dnnsgnzls.mvvm.viewmodel.MainViewModel
 
 class MainFragment : Fragment() {
 

@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace 'com.example.mvvm'
+    namespace 'com.dnnsgnzls.mvvm'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.example.mvvm"
+        applicationId "com.dnnsgnzls.mvvm"
         minSdk 24
         targetSdk 33
         versionCode 1

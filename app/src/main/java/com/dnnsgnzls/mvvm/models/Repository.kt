@@ -1,4 +1,4 @@
-package com.example.mvvm.models
+package com.dnnsgnzls.mvvm.models
 
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
