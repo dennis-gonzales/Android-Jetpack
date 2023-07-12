@@ -13,7 +13,7 @@ class HeroService {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
-    private val apiService: ApiService = retrofit.create(ApiService::class.java)
+    private val heroNetworkService: HeroNetworkService = retrofit.create(HeroNetworkService::class.java)
 
-    suspend fun getHeroes() = apiService.getHeroes()
+    suspend fun getHeroes() = heroNetworkService.getHeroes()
 }
