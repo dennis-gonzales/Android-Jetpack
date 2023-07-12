@@ -63,8 +63,6 @@ class MainFragment : Fragment() {
         // Observe the LiveData from the ViewModel
         viewModel.hero.observe(viewLifecycleOwner) { data ->
             // Update UI with the data
-            Log.d("COROUTINE_TEST", "onCreate: $data")
-
             binding.list.apply { adapter = HeroAdapter(data) }
         }
 

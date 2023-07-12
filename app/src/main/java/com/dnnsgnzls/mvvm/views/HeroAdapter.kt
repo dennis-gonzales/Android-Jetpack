@@ -35,7 +35,7 @@ class HeroAdapter(private val list: List<Hero>) : RecyclerView.Adapter<HeroAdapt
 
         // hero description
         val heroDetailsStringFormat: String = holder.itemView.context.getString(R.string.hero_details)
-        holder.info.text = String.format(heroDetailsStringFormat, currentItem.attackType.value, currentItem.primaryAttr.value, currentItem.roles.joinToString(", "))
+        holder.info.text = String.format(heroDetailsStringFormat, currentItem.attackType?.value, currentItem.primaryAttribute?.value, currentItem?.roles?.joinToString(", "))
     }
 
     override fun getItemCount() = list.size

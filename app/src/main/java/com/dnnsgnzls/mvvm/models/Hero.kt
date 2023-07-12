@@ -2,7 +2,7 @@ package com.dnnsgnzls.mvvm.models
 
 import com.dnnsgnzls.mvvm.models.enums.AttackType
 import com.dnnsgnzls.mvvm.models.enums.ImageType
-import com.dnnsgnzls.mvvm.models.enums.PrimaryAttr
+import com.dnnsgnzls.mvvm.models.enums.PrimaryAttribute
 import com.dnnsgnzls.mvvm.models.enums.Role
 import com.google.gson.annotations.SerializedName
 
@@ -15,12 +15,14 @@ data class Hero(
     val localizedName: String,
 
     @SerializedName("primary_attr")
-    val primaryAttr: PrimaryAttr,
+    val primaryAttribute: PrimaryAttribute,
 
     @SerializedName("attack_type")
     val attackType: AttackType,
 
-    val roles: List<Role>, val legs: Int
+    val roles: List<Role>,
+
+    val legs: Int
 )  {
     private fun getImageUrl(type: ImageType): String {
         val typeName = when (type) {
