@@ -68,7 +68,8 @@ class MainFragment : Fragment() {
             binding.loadingHeroes.visibility = View.GONE
             binding.swiperefresh.isRefreshing = false
 
-            viewModel.fetchFromRemote()
+            // hard refresh - fetch from api
+            viewModel.refresh(hardRefresh = true)
         }
     }
 
@@ -78,8 +79,6 @@ class MainFragment : Fragment() {
             // Update UI with the heroList
             binding.heroList.visibility = View.VISIBLE
             heroAdapter.updateList(heroList)
-
-            Toast.makeText(activity, "Hero list retrieved from endpoint", Toast.LENGTH_SHORT).show()
         }
 
         // Loading indicator
@@ -90,6 +89,6 @@ class MainFragment : Fragment() {
         }
 
         // Fetch data
-        viewModel.fetchFromRemote()
+        viewModel.refresh()
     }
 }

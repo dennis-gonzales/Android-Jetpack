@@ -18,7 +18,7 @@ interface HeroDao {
     @Query("SELECT * FROM hero WHERE id=:heroId")
     suspend fun get(heroId: Int): Hero
 
-    @Query("SELECT * FROM hero ORDER BY id DESC")
+    @Query("SELECT * FROM hero ORDER BY id ASC")
     suspend fun getAll(): List<Hero>
 
     @Update
