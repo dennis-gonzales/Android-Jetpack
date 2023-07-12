@@ -12,7 +12,7 @@ import com.dnnsgnzls.mvvm.util.getProgressDrawable
 import com.dnnsgnzls.mvvm.util.loadImage
 
 
-class HeroAdapter(private val list: ArrayList<Hero>) :
+class HeroAdapter(private val list: MutableList<Hero>) :
     RecyclerView.Adapter<HeroAdapter.HeroViewHolder>() {
 
     fun updateList(newList: List<Hero>) {

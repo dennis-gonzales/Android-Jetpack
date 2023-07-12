@@ -1,14 +1,19 @@
 package com.dnnsgnzls.mvvm.viewmodel
 
+import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.dnnsgnzls.mvvm.models.Hero
+import com.dnnsgnzls.mvvm.models.HeroDatabase
 import com.dnnsgnzls.mvvm.models.HeroRepository
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.observers.DisposableSingleObserver
+import kotlinx.coroutines.launch
 
-class MainViewModel(private val heroRepository: HeroRepository) : ViewModel() {
+class MainViewModel(
+    private val application: Application,
+    private val heroRepository: HeroRepository
+) : BaseViewModel(application) {
 
     private val disposable = CompositeDisposable()
 
@@ -25,8 +30,7 @@ class MainViewModel(private val heroRepository: HeroRepository) : ViewModel() {
 
         val heroListObserver = object : DisposableSingleObserver<List<Hero>>() {
             override fun onSuccess(heroList: List<Hero>) {
-                _heroList.value = heroList
-                _loading.value = false
+                storeToDatabase(heroList)
             }
 
             override fun onError(e: Throwable) {
@@ -42,6 +46,20 @@ class MainViewModel(private val heroRepository: HeroRepository) : ViewModel() {
         )
     }
 
+    private fun updateHeroList(heroList: List<Hero>) {
+        _heroList.value = heroList
+        _loading.value = false
+    }
+
+    private fun storeToDatabase(heroList: List<Hero>) {
+        launch {
+            val dao = HeroDatabase(getApplication()).heroDao()
+
+            dao.deleteAll()
+            dao.insertAll(heroList)
+            updateHeroList(heroList)
+        }
+    }
 
     override fun onCleared() {
         super.onCleared()
