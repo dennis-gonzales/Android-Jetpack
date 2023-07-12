@@ -4,18 +4,19 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.dnnsgnzls.mvvm.models.Data
-import com.dnnsgnzls.mvvm.models.Repository
+import com.dnnsgnzls.mvvm.models.Hero
+import com.dnnsgnzls.mvvm.models.HeroRepository
 import kotlinx.coroutines.launch
 
-class MainViewModel(private val repository: Repository) : ViewModel() {
+class MainViewModel(private val heroRepository: HeroRepository) : ViewModel() {
 
-    private val _data = MutableLiveData<Data>()
-    val data: LiveData<Data> get() = _data
+    private val _hero = MutableLiveData<List<Hero>>()
+    val hero: LiveData<List<Hero>>
+        get() = _hero
 
     fun fetchData() {
         viewModelScope.launch {
-            _data.value = repository.fetchData()
+            _hero.value = heroRepository.fetchHeroes()
         }
     }
 }

@@ -1,8 +1,8 @@
-package com.dnnsgnzls.mvvm
+package com.dnnsgnzls.mvvm.views
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.dnnsgnzls.mvvm.ui.main.MainFragment
+import com.dnnsgnzls.mvvm.R
 
 class MainActivity : AppCompatActivity() {
 
