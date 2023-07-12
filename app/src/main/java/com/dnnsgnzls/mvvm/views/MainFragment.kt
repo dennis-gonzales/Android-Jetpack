@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.dnnsgnzls.mvvm.databinding.FragmentMainBinding
 import com.dnnsgnzls.mvvm.models.HeroRepository
 import com.dnnsgnzls.mvvm.viewmodel.MainViewModel
+import io.reactivex.rxjava3.schedulers.Schedulers
 
 
 class MainFragment : Fragment() {
@@ -53,12 +54,12 @@ class MainFragment : Fragment() {
         return view
     }
 
-    fun initializeViews() {
+    private fun initializeViews() {
         // Recyclerview fixed size for optimization
         binding.list.setHasFixedSize(true)
     }
 
-    fun observeViewModels() {
+    private fun observeViewModels() {
         // Observe the LiveData from the ViewModel
         viewModel.hero.observe(viewLifecycleOwner) { data ->
             // Update UI with the data
