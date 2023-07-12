@@ -66,11 +66,6 @@ class MainFragment : Fragment() {
         }
 
         // Fetch data
-        viewModel.fetchData()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        viewModel.fetchData()
+        viewModel.fetchFromRemote()
     }
 }

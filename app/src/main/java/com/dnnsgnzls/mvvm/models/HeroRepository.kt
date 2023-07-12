@@ -1,16 +1,12 @@
 package com.dnnsgnzls.mvvm.models
 
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import io.reactivex.rxjava3.core.Single
 
-class HeroRepository(private val dispatcher: CoroutineDispatcher = Dispatchers.IO) {
+class HeroRepository() {
 
     private val heroService = HeroService()
 
-    suspend fun fetchHeroes(): List<Hero> {
-        return withContext(dispatcher) {
-            heroService.getHeroes()
-        }
+    fun fetchHeroes(): Single<List<Hero>> {
+        return heroService.getHeroes()
     }
 }
