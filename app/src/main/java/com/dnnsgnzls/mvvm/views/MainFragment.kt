@@ -26,16 +26,16 @@ class MainFragment : Fragment() {
 
     private val heroAdapter = HeroAdapter(arrayListOf())
 
-    // Prefer Dependency Injection - Dagger or Hilt
-    class ViewModelFactory : ViewModelProvider.NewInstanceFactory() {
-        @Suppress("UNCHECKED_CAST")
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return MainViewModel(HeroRepository()) as T
-        }
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Prefer Dependency Injection - Dagger or Hilt
+        class ViewModelFactory : ViewModelProvider.NewInstanceFactory() {
+            @Suppress("UNCHECKED_CAST")
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                return MainViewModel(activity!!.application, HeroRepository()) as T
+            }
+        }
 
         // Initialize the ViewModel with a new instance of Repository
         viewModel = ViewModelProvider(this, ViewModelFactory()).get(MainViewModel::class.java)
