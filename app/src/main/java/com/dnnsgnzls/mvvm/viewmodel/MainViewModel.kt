@@ -11,27 +11,37 @@ import io.reactivex.rxjava3.observers.DisposableSingleObserver
 class MainViewModel(private val heroRepository: HeroRepository) : ViewModel() {
 
     private val disposable = CompositeDisposable()
-    private val _hero = MutableLiveData<List<Hero>>()
-    val hero: LiveData<List<Hero>>
-        get() = _hero
 
-    private val heroListObserver = object : DisposableSingleObserver<List<Hero>>() {
-        override fun onSuccess(heroList: List<Hero>) {
-            _hero.value = heroList
-        }
+    private val _heroList = MutableLiveData<List<Hero>>()
+    val heroList: LiveData<List<Hero>>
+        get() = _heroList
 
-        override fun onError(e: Throwable) {
-            e.printStackTrace()
-        }
-    }
+    private val _loading = MutableLiveData<Boolean>();
+    val loading: LiveData<Boolean>
+        get() = _loading
 
     fun fetchFromRemote() {
+        _loading.value = true
+
+        val heroListObserver = object : DisposableSingleObserver<List<Hero>>() {
+            override fun onSuccess(heroList: List<Hero>) {
+                _heroList.value = heroList
+                _loading.value = false
+            }
+
+            override fun onError(e: Throwable) {
+                _loading.value = false
+                e.printStackTrace()
+            }
+        }
+
         disposable.add(
             heroRepository
                 .fetchHeroes()
                 .subscribeWith(heroListObserver)
         )
     }
+
 
     override fun onCleared() {
         super.onCleared()

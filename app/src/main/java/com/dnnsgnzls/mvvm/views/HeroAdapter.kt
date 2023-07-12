@@ -8,9 +8,18 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.dnnsgnzls.mvvm.R
 import com.dnnsgnzls.mvvm.models.Hero
+import com.dnnsgnzls.mvvm.util.getProgressDrawable
+import com.dnnsgnzls.mvvm.util.loadImage
 
 
-class HeroAdapter(private val list: List<Hero>) : RecyclerView.Adapter<HeroAdapter.HeroViewHolder>() {
+class HeroAdapter(private val list: ArrayList<Hero>) :
+    RecyclerView.Adapter<HeroAdapter.HeroViewHolder>() {
+
+    fun updateList(newList: List<Hero>) {
+        list.clear()
+        list.addAll(newList)
+        notifyDataSetChanged()
+    }
 
     class HeroViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val title: TextView = view.findViewById(R.id.cardTitle)
@@ -22,7 +31,8 @@ class HeroAdapter(private val list: List<Hero>) : RecyclerView.Adapter<HeroAdapt
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HeroViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(
             R.layout.hero_item,
-            parent, false)
+            parent, false
+        )
 
         return HeroViewHolder(view)
     }
@@ -34,8 +44,25 @@ class HeroAdapter(private val list: List<Hero>) : RecyclerView.Adapter<HeroAdapt
         holder.title.text = currentItem.localizedName
 
         // hero description
-        val heroDetailsStringFormat: String = holder.itemView.context.getString(R.string.hero_details)
-        holder.info.text = String.format(heroDetailsStringFormat, currentItem.attackType?.value, currentItem.primaryAttribute?.value, currentItem?.roles?.joinToString(", "))
+        val heroDetailsStringFormat: String =
+            holder.itemView.context.getString(R.string.hero_details)
+        holder.info.text = String.format(
+            heroDetailsStringFormat,
+            currentItem.attackType.value,
+            currentItem.primaryAttribute.value,
+            currentItem.roles.joinToString(", ")
+        )
+
+        // load images using Glide - via kotlin extensions
+        holder.profleImage.loadImage(
+            currentItem.iconUrl,
+            getProgressDrawable(holder.itemView.context)
+        )
+
+        holder.coverImage.loadImage(
+            currentItem.fullImageUrl,
+            getProgressDrawable(holder.itemView.context)
+        )
     }
 
     override fun getItemCount() = list.size

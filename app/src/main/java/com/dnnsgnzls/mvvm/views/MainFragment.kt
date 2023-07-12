@@ -4,13 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.dnnsgnzls.mvvm.databinding.FragmentMainBinding
 import com.dnnsgnzls.mvvm.models.HeroRepository
 import com.dnnsgnzls.mvvm.viewmodel.MainViewModel
-import io.reactivex.rxjava3.schedulers.Schedulers
 
 
 class MainFragment : Fragment() {
@@ -20,10 +20,13 @@ class MainFragment : Fragment() {
     }
 
     private lateinit var viewModel: MainViewModel
-    private var _binding: FragmentMainBinding? = null
 
+    private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
 
+    private val heroAdapter = HeroAdapter(arrayListOf())
+
+    // Prefer Dependency Injection - Dagger or Hilt
     class ViewModelFactory : ViewModelProvider.NewInstanceFactory() {
         @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -55,15 +58,35 @@ class MainFragment : Fragment() {
     }
 
     private fun initializeViews() {
-        // Recyclerview fixed size for optimization
-        binding.list.setHasFixedSize(true)
+        binding.heroList.apply {
+            adapter = heroAdapter
+            setHasFixedSize(true)
+        }
+
+        binding.swiperefresh.setOnRefreshListener {
+            binding.heroList.visibility = View.GONE
+            binding.loadingHeroes.visibility = View.GONE
+            binding.swiperefresh.isRefreshing = false
+
+            viewModel.fetchFromRemote()
+        }
     }
 
     private fun observeViewModels() {
         // Observe the LiveData from the ViewModel
-        viewModel.hero.observe(viewLifecycleOwner) { data ->
-            // Update UI with the data
-            binding.list.apply { adapter = HeroAdapter(data) }
+        viewModel.heroList.observe(viewLifecycleOwner) { heroList ->
+            // Update UI with the heroList
+            binding.heroList.visibility = View.VISIBLE
+            heroAdapter.updateList(heroList)
+
+            Toast.makeText(activity, "Hero list retrieved from endpoint", Toast.LENGTH_SHORT).show()
+        }
+
+        // Loading indicator
+        viewModel.loading.observe(viewLifecycleOwner) { loading ->
+            binding.loadingHeroes.apply {
+                visibility = if (loading) View.VISIBLE else View.GONE
+            }
         }
 
         // Fetch data
