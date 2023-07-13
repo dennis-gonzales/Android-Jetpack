@@ -5,7 +5,6 @@ import android.content.SharedPreferences
 import androidx.core.content.edit
 
 class Prefs {
-
     companion object {
 
         private const val PREF_SAVE_TIME = "pref_save_time"

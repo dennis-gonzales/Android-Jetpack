@@ -7,23 +7,22 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.dnnsgnzls.jetpack.databinding.FragmentMainBinding
+import androidx.navigation.fragment.findNavController
+import com.dnnsgnzls.jetpack.databinding.FragmentHeroBinding
+import com.dnnsgnzls.jetpack.models.Hero
 import com.dnnsgnzls.jetpack.models.HeroRepository
+import com.dnnsgnzls.jetpack.models.IHeroClick
 import com.dnnsgnzls.jetpack.viewmodel.MainViewModel
+import com.dnnsgnzls.jetpack.views.adapter.HeroAdapter
 
 
-class MainFragment : Fragment() {
-
-    companion object {
-        fun newInstance() = MainFragment()
-    }
-
+class HeroFragment : Fragment(), IHeroClick {
     private lateinit var viewModel: MainViewModel
+    private lateinit var heroAdapter: HeroAdapter
 
-    private var _binding: FragmentMainBinding? = null
-    private val binding get() = _binding!!
-
-    private val heroAdapter = HeroAdapter(arrayListOf())
+    private var _binding: FragmentHeroBinding? = null
+    private val binding get()
+        = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,15 +38,16 @@ class MainFragment : Fragment() {
         // Initialize the ViewModel with a new instance of Repository
         viewModel = ViewModelProvider(this, ViewModelFactory()).get(MainViewModel::class.java)
 
-
+        // Instantiate HeroAdapter with the viewModel's scope
+        heroAdapter = HeroAdapter(arrayListOf(), this, viewModel)
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Create instance of FragmentMainBinding class
-        _binding = FragmentMainBinding.inflate(inflater, container, false)
+        // Create instance of `FragmentMainBinding` class - `fragment_hero.xml` layout
+        _binding = FragmentHeroBinding.inflate(inflater, container, false)
         val view = binding.root
 
         initializeViews()
@@ -89,5 +89,10 @@ class MainFragment : Fragment() {
 
         // Fetch data
         viewModel.refresh()
+    }
+
+    override fun onClick(view: View, hero: Hero) {
+        val action = HeroFragmentDirections.actionHeroFragmentToDetailsFragment(hero.id)
+        findNavController().navigate(action)
     }
 }

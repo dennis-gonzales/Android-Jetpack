@@ -50,5 +50,14 @@ data class Hero(
 
     val iconUrl: String
         get() = getImageUrl(ImageType.ICON)
+
+    fun getDescription(stringFormat: String): String {
+        return String.format(
+            stringFormat,
+            attackType.value,
+            primaryAttribute.value,
+            roles.joinToString(", ")
+        )
+    }
 }
 
