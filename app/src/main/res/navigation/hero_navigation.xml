@@ -3,12 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/hero_navigation"
+    android:label="navigation_hero"
     app:startDestination="@id/heroFragment">
 
     <fragment
         android:id="@+id/heroFragment"
         android:name="com.dnnsgnzls.jetpack.views.HeroFragment"
-        android:label="fragment_hero"
+        android:label="Hero"
         tools:layout="@layout/fragment_hero">
         <action
             android:id="@+id/action_heroFragment_to_detailsFragment"
@@ -18,7 +19,7 @@
     <fragment
         android:id="@+id/detailsFragment"
         android:name="com.dnnsgnzls.jetpack.views.DetailsFragment"
-        android:label="fragment_details"
+        android:label="Hero Details"
         tools:layout="@layout/fragment_details" />
 
 </navigation>
