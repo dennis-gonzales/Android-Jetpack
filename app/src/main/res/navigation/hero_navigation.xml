@@ -13,10 +13,11 @@
         tools:layout="@layout/fragment_hero">
         <action
             android:id="@+id/action_heroFragment_to_detailsFragment"
-            app:destination="@id/detailsFragment" />
-        <argument
-            android:name="heroId"
-            app:argType="integer" />
+            app:destination="@id/detailsFragment"
+            app:enterAnim="@anim/nav_default_pop_enter_anim"
+            app:exitAnim="@anim/nav_default_pop_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
 
     <fragment
@@ -24,6 +25,9 @@
         android:name="com.dnnsgnzls.jetpack.views.DetailsFragment"
         android:label="Hero Details"
         tools:layout="@layout/fragment_details" >
+        <argument
+            android:name="heroId"
+            app:argType="integer" />
     </fragment>
 
 </navigation>

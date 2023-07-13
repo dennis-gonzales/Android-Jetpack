@@ -1,11 +1,11 @@
 package com.dnnsgnzls.jetpack.views
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.dnnsgnzls.jetpack.common.constants
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.navArgs
 import com.dnnsgnzls.jetpack.databinding.FragmentDetailsBinding
 
 class DetailsFragment : Fragment() {
@@ -17,9 +17,9 @@ class DetailsFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            heroId = it.getInt(constants.HERO_ID)
-        }
+
+        val args: DetailsFragmentArgs by navArgs()
+        heroId = args.heroId
     }
 
     override fun onCreateView(
