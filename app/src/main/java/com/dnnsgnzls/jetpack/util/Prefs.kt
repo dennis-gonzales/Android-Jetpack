@@ -1,4 +1,4 @@
-package com.dnnsgnzls.mvvm.util
+package com.dnnsgnzls.jetpack.util
 
 import android.content.Context
 import android.content.SharedPreferences

@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace 'com.dnnsgnzls.mvvm'
+    namespace 'com.dnnsgnzls.jetpack'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.dnnsgnzls.mvvm"
+        applicationId "com.dnnsgnzls.jetpack"
         minSdk 24
         targetSdk 33
         versionCode 1
@@ -28,10 +28,13 @@ android {
         viewBinding = true
     }
     compileOptions {
+        // Project uses Java 17 to compile project's source files
         sourceCompatibility JavaVersion.VERSION_17
+        // Project's compiled bytecode is compatible to Java 17
         targetCompatibility JavaVersion.VERSION_17
     }
     kotlinOptions {
+        //  Kotlin code is compiled to be compatible with JVM 17
         jvmTarget = '17'
     }
 }

@@ -1,11 +1,11 @@
-package com.dnnsgnzls.mvvm.util
+package com.dnnsgnzls.jetpack.util
 
 import android.content.Context
 import android.widget.ImageView
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.dnnsgnzls.mvvm.R
+import com.dnnsgnzls.jetpack.R
 
 fun getProgressDrawable(context: Context): CircularProgressDrawable {
     return CircularProgressDrawable(context).apply {

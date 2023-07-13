@@ -1,4 +1,4 @@
-package com.dnnsgnzls.mvvm.viewmodel
+package com.dnnsgnzls.jetpack.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel

@@ -1,15 +1,15 @@
-package com.dnnsgnzls.mvvm.viewmodel
+package com.dnnsgnzls.jetpack.viewmodel
 
 import android.app.Application
 import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.dnnsgnzls.mvvm.models.Hero
-import com.dnnsgnzls.mvvm.models.HeroDatabase
-import com.dnnsgnzls.mvvm.models.HeroRepository
-import com.dnnsgnzls.mvvm.util.Prefs
-import com.dnnsgnzls.mvvm.util.hasElapsed
-import com.dnnsgnzls.mvvm.util.timeLeft
+import com.dnnsgnzls.jetpack.models.Hero
+import com.dnnsgnzls.jetpack.models.HeroDatabase
+import com.dnnsgnzls.jetpack.models.HeroRepository
+import com.dnnsgnzls.jetpack.util.Prefs
+import com.dnnsgnzls.jetpack.util.hasElapsed
+import com.dnnsgnzls.jetpack.util.timeLeft
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.observers.DisposableSingleObserver
 import kotlinx.coroutines.launch

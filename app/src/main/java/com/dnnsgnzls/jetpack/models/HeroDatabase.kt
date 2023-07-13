@@ -1,11 +1,11 @@
-package com.dnnsgnzls.mvvm.models
+package com.dnnsgnzls.jetpack.models
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.dnnsgnzls.mvvm.models.enums.RoleListTypeConverter
+import com.dnnsgnzls.jetpack.models.enums.RoleListTypeConverter
 
 @Database(
     entities = [Hero::class],

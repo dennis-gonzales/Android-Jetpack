@@ -1,4 +1,4 @@
-package com.dnnsgnzls.mvvm.models.enums
+package com.dnnsgnzls.jetpack.models.enums
 
 private const val MELEE = "Melee"
 private const val RANGED = "Ranged"

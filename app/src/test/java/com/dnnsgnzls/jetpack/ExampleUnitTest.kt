@@ -1,4 +1,4 @@
-package com.dnnsgnzls.mvvm
+package com.dnnsgnzls.jetpack
 
 import org.junit.Test
 

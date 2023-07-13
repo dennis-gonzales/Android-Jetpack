@@ -1,4 +1,4 @@
-package com.dnnsgnzls.mvvm.models
+package com.dnnsgnzls.jetpack.models
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Scheduler
