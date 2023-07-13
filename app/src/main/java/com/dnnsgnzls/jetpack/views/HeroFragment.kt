@@ -4,13 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.Animation
-import android.view.animation.AnimationUtils
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.dnnsgnzls.jetpack.R
 import com.dnnsgnzls.jetpack.databinding.FragmentHeroBinding
 import com.dnnsgnzls.jetpack.models.Hero
 import com.dnnsgnzls.jetpack.models.HeroRepository
@@ -60,11 +57,8 @@ class HeroFragment : Fragment(), IHeroClick {
     }
 
     private fun initializeViews() {
-        val anim = AnimationUtils.loadAnimation(context, R.anim.item_animation_fall_down)
-
         binding.heroList.apply {
             adapter = heroAdapter
-            animation = anim
             setHasFixedSize(true)
         }
 

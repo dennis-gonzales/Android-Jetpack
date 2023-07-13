@@ -4,10 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="hero"
             type="com.dnnsgnzls.jetpack.models.Hero" />
+
+        <variable name="clickable" type="com.dnnsgnzls.jetpack.models.IHeroClick"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -54,7 +55,8 @@
             android:layout_height="48dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
-            android:text="Like"
+            android:text="MORE"
+            android:onClick="@{(view) -> clickable.onClick(view, hero)}"
             app:cornerRadius="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
