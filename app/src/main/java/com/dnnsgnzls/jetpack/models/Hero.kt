@@ -1,12 +1,12 @@
-package com.dnnsgnzls.mvvm.models
+package com.dnnsgnzls.jetpack.models
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.dnnsgnzls.mvvm.models.enums.AttackType
-import com.dnnsgnzls.mvvm.models.enums.ImageType
-import com.dnnsgnzls.mvvm.models.enums.PrimaryAttribute
-import com.dnnsgnzls.mvvm.models.enums.Role
+import com.dnnsgnzls.jetpack.models.enums.AttackType
+import com.dnnsgnzls.jetpack.models.enums.ImageType
+import com.dnnsgnzls.jetpack.models.enums.PrimaryAttribute
+import com.dnnsgnzls.jetpack.models.enums.Role
 import com.google.gson.annotations.SerializedName
 
 @Entity(tableName = "hero")

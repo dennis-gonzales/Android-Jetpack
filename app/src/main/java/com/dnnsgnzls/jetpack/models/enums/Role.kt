@@ -1,4 +1,4 @@
-package com.dnnsgnzls.mvvm.models.enums
+package com.dnnsgnzls.jetpack.models.enums
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

@@ -1,4 +1,4 @@
-package com.dnnsgnzls.mvvm.models
+package com.dnnsgnzls.jetpack.models
 
 import androidx.room.Dao
 import androidx.room.Delete

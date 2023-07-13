@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">MVVM</string>
-    <string name="welcome_message">Hello, MVVM!</string>
+    <string name="app_name">Android Jetpack</string>
     <string name="hero_details">%s(%s): %s</string>
 </resources>

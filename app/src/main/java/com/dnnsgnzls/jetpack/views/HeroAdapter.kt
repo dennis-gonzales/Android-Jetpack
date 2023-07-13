@@ -1,4 +1,4 @@
-package com.dnnsgnzls.mvvm.views
+package com.dnnsgnzls.jetpack.views
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,10 +6,10 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.dnnsgnzls.mvvm.R
-import com.dnnsgnzls.mvvm.models.Hero
-import com.dnnsgnzls.mvvm.util.getProgressDrawable
-import com.dnnsgnzls.mvvm.util.loadImage
+import com.dnnsgnzls.jetpack.R
+import com.dnnsgnzls.jetpack.models.Hero
+import com.dnnsgnzls.jetpack.util.getProgressDrawable
+import com.dnnsgnzls.jetpack.util.loadImage
 
 
 class HeroAdapter(private val list: MutableList<Hero>) :

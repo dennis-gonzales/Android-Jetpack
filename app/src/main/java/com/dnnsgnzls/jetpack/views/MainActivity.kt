@@ -1,8 +1,8 @@
-package com.dnnsgnzls.mvvm.views
+package com.dnnsgnzls.jetpack.views
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.dnnsgnzls.mvvm.R
+import com.dnnsgnzls.jetpack.R
 
 class MainActivity : AppCompatActivity() {
 
