@@ -1,7 +1,6 @@
 package com.dnnsgnzls.jetpack.views
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,11 +19,10 @@ import com.dnnsgnzls.jetpack.views.adapter.HeroAdapter
 
 class HeroFragment : Fragment(), IHeroClick {
     private lateinit var viewModel: MainViewModel
+    private lateinit var heroAdapter: HeroAdapter
 
     private var _binding: FragmentHeroBinding? = null
     private val binding get() = _binding!!
-
-    private val heroAdapter = HeroAdapter(arrayListOf(), this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,6 +37,9 @@ class HeroFragment : Fragment(), IHeroClick {
 
         // Initialize the ViewModel with a new instance of Repository
         viewModel = ViewModelProvider(this, ViewModelFactory()).get(MainViewModel::class.java)
+
+        // Instantiate HeroAdapter with the viewModel's scope
+        heroAdapter = HeroAdapter(arrayListOf(), this, viewModel)
     }
 
     override fun onCreateView(
@@ -91,10 +92,6 @@ class HeroFragment : Fragment(), IHeroClick {
     }
 
     override fun onClick(view: View, hero: Hero) {
-        Log.d("ONCLICK", "onClick")
-//        val action = HeroDi
         findNavController().navigate(R.id.action_heroFragment_to_detailsFragment)
     }
-
-
 }

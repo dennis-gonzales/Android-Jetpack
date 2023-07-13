@@ -10,11 +10,18 @@ import com.dnnsgnzls.jetpack.models.Hero
 import com.dnnsgnzls.jetpack.models.IHeroClick
 import com.dnnsgnzls.jetpack.util.getProgressDrawable
 import com.dnnsgnzls.jetpack.util.loadImage
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ensureActive
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class HeroAdapter(
     private var list: List<Hero>,
-    private val clickable: IHeroClick
+    private val clickable: IHeroClick,
+    private val scope: CoroutineScope
 ) :
     RecyclerView.Adapter<HeroAdapter.HeroViewHolder>() {
 
@@ -57,9 +64,17 @@ class HeroAdapter(
 
     override fun getItemCount() = list.size
 
-    fun updateList(newList: List<Hero>) {
-        val diffResult = DiffUtil.calculateDiff(HeroDiffCallback(list, newList))
-        this.list = newList
-        diffResult.dispatchUpdatesTo(this)
+    fun updateList(newList: List<Hero>, dispatcher: CoroutineDispatcher = Dispatchers.Default) {
+        scope.launch {
+            ensureActive() // Check for cancellation
+
+            val diffResult = withContext(dispatcher) {
+                DiffUtil.calculateDiff(HeroDiffCallback(list, newList))
+            }
+
+            list = newList
+            diffResult.dispatchUpdatesTo(this@HeroAdapter)
+        }
     }
+
 }
