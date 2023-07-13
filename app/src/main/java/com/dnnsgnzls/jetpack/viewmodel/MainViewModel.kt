@@ -1,7 +1,6 @@
 package com.dnnsgnzls.jetpack.viewmodel
 
 import android.app.Application
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.dnnsgnzls.jetpack.models.Hero
@@ -9,11 +8,10 @@ import com.dnnsgnzls.jetpack.models.HeroDatabase
 import com.dnnsgnzls.jetpack.models.HeroRepository
 import com.dnnsgnzls.jetpack.util.Prefs
 import com.dnnsgnzls.jetpack.util.hasElapsed
-import com.dnnsgnzls.jetpack.util.timeLeft
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.observers.DisposableSingleObserver
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.launch
-import java.lang.Exception
 
 class MainViewModel(
     application: Application,
@@ -58,11 +56,6 @@ class MainViewModel(
         val heroListObserver = object : DisposableSingleObserver<List<Hero>>() {
             override fun onSuccess(heroList: List<Hero>) {
                 storeToDatabase(heroList)
-                Toast.makeText(
-                    getApplication(),
-                    "Successfully fetched data from endpoint.",
-                    Toast.LENGTH_LONG
-                ).show()
             }
 
             override fun onError(e: Throwable) {
@@ -83,18 +76,12 @@ class MainViewModel(
 
         launch {
             try {
+                ensureActive()
+
                 val dao = HeroDatabase(getApplication()).heroDao()
 
                 val heroList = dao.getAll()
                 updateHeroList(heroList)
-
-                Toast.makeText(
-                    getApplication(),
-                    "Successfully fetched data from database. cache will be invalidated in ${
-                        prefs.getUpdateTime().timeLeft(refreshTime)
-                    }",
-                    Toast.LENGTH_LONG
-                ).show()
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -108,14 +95,20 @@ class MainViewModel(
 
     private fun storeToDatabase(heroList: List<Hero>) {
         launch {
-            val dao = HeroDatabase(getApplication()).heroDao()
+            try {
+                ensureActive()
 
-            dao.deleteAll()
-            dao.insertAll(heroList)
-            updateHeroList(heroList)
+                val dao = HeroDatabase(getApplication()).heroDao()
+
+                dao.deleteAll()
+                dao.insertAll(heroList)
+                updateHeroList(heroList)
+
+                prefs.saveUpdateTime(System.nanoTime())
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
-
-        prefs.saveUpdateTime(System.nanoTime())
     }
 
     override fun onCleared() {

@@ -26,7 +26,8 @@ android {
         }
     }
     buildFeatures {
-        viewBinding = true
+        viewBinding true
+        dataBinding true
     }
     compileOptions {
         // Project uses Java 17 to compile project's source files

@@ -36,6 +36,6 @@ class DetailsFragment : Fragment() {
     }
 
     private fun initializeViews() {
-        binding.testTextView.text = "${heroId?: -1}"
+        binding.testTextView.text = "${heroId ?: -1}"
     }
 }

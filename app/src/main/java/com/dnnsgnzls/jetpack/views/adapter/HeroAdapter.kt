@@ -2,14 +2,13 @@ package com.dnnsgnzls.jetpack.views.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.dnnsgnzls.jetpack.R
 import com.dnnsgnzls.jetpack.databinding.HeroItemBinding
 import com.dnnsgnzls.jetpack.models.Hero
 import com.dnnsgnzls.jetpack.models.IHeroClick
-import com.dnnsgnzls.jetpack.util.getProgressDrawable
-import com.dnnsgnzls.jetpack.util.loadImage
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -25,28 +24,13 @@ class HeroAdapter(
 ) :
     RecyclerView.Adapter<HeroAdapter.HeroViewHolder>() {
 
-    class HeroViewHolder(private val binding: HeroItemBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+    class HeroViewHolder(
+        private val binding: HeroItemBinding
+    ) : RecyclerView.ViewHolder(binding.root) {
+
         fun bind(hero: Hero, clickable: IHeroClick) {
-            // hero name
-            binding.cardTitle.text = hero.localizedName
+            binding.hero = hero
 
-            // hero description - using string format
-            val heroDescStringFormat = itemView.context.getString(R.string.hero_details)
-            binding.cardInformation.text = hero.getDescription(heroDescStringFormat)
-
-            // load hero images using Glide - via kotlin extensions
-            binding.cardProfile.loadImage(
-                hero.iconUrl,
-                getProgressDrawable(itemView.context)
-            )
-
-            binding.cardBackground.loadImage(
-                hero.fullImageUrl,
-                getProgressDrawable(itemView.context)
-            )
-
-            // setup click listener
             binding.cardButton.setOnClickListener {
                 clickable.onClick(it, hero)
             }
@@ -54,7 +38,8 @@ class HeroAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HeroViewHolder {
-        val binding = HeroItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val inflater = LayoutInflater.from(parent.context)
+        val binding = DataBindingUtil.inflate<HeroItemBinding>(inflater, R.layout.hero_item, parent, false)
         return HeroViewHolder(binding)
     }
 
