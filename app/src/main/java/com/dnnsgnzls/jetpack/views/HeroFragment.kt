@@ -4,11 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.dnnsgnzls.jetpack.R
+import com.dnnsgnzls.jetpack.common.constants
 import com.dnnsgnzls.jetpack.databinding.FragmentHeroBinding
 import com.dnnsgnzls.jetpack.models.Hero
 import com.dnnsgnzls.jetpack.models.HeroRepository
@@ -22,7 +24,8 @@ class HeroFragment : Fragment(), IHeroClick {
     private lateinit var heroAdapter: HeroAdapter
 
     private var _binding: FragmentHeroBinding? = null
-    private val binding get() = _binding!!
+    private val binding get()
+        = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -92,6 +95,7 @@ class HeroFragment : Fragment(), IHeroClick {
     }
 
     override fun onClick(view: View, hero: Hero) {
-        findNavController().navigate(R.id.action_heroFragment_to_detailsFragment)
+        val bundle = bundleOf(constants.HERO_ID to hero.id)
+        findNavController().navigate(R.id.action_heroFragment_to_detailsFragment, bundle)
     }
 }

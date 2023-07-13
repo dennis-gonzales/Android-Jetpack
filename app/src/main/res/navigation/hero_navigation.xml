@@ -14,12 +14,16 @@
         <action
             android:id="@+id/action_heroFragment_to_detailsFragment"
             app:destination="@id/detailsFragment" />
+        <argument
+            android:name="heroId"
+            app:argType="integer" />
     </fragment>
 
     <fragment
         android:id="@+id/detailsFragment"
         android:name="com.dnnsgnzls.jetpack.views.DetailsFragment"
         android:label="Hero Details"
-        tools:layout="@layout/fragment_details" />
+        tools:layout="@layout/fragment_details" >
+    </fragment>
 
 </navigation>
