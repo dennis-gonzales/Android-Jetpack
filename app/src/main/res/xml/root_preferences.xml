@@ -1,0 +1,29 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory app:title="Cache">
+
+        <!--        <EditTextPreference-->
+        <!--            app:key="signature"-->
+        <!--            app:title="@string/signature_title"-->
+        <!--            app:useSimpleSummaryProvider="true" />-->
+
+        <SwitchPreferenceCompat
+            app:key="caching_enabled"
+            app:defaultValue="@bool/caching_enabled"
+            app:summaryOff="Always calls the backend for fresh information. (Swipe refreshes calls the backend)"
+            app:summaryOn="Automatically caches data periodically (Saves data usage and works offline)"
+            app:title="Enable or disable caching support" />
+
+<!--        <ListPreference-->
+<!--            app:dependency="caching_enabled"-->
+<!--            app:defaultValue="@integer/default_cache_time"-->
+<!--            app:entries="@array/cache_time_entries"-->
+<!--            app:entryValues="@array/cache_time_values"-->
+<!--            app:key="cache_time"-->
+<!--            app:title="Cache invalidation time"-->
+<!--            app:useSimpleSummaryProvider="true" />-->
+
+    </PreferenceCategory>
+
+
+</PreferenceScreen>

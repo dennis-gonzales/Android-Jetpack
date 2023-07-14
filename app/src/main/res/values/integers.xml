@@ -5,4 +5,5 @@
     <integer name="anim_duration_medium">300</integer>
     <integer name="anim_duration_long">400</integer>
 
+    <!-- <integer name="default_cache_time">15</integer> -->
 </resources>

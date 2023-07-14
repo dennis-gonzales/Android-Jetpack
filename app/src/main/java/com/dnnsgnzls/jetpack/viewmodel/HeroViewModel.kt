@@ -35,7 +35,12 @@ class HeroViewModel(
     private val refreshTime = 1 * 15 * 1000 * 1000 * 1000L // 15 seconds
 
     fun refresh(hardRefresh: Boolean = false) {
-        if (hardRefresh) {
+        fun isHardRefreshOrCachingDisabled(): Boolean {
+            val isCachingEnabled = prefs.getIsCachingEnabled()
+            return hardRefresh || isCachingEnabled == false
+        }
+
+        if (isHardRefreshOrCachingDisabled()) {
             fetchFromRemote()
             return
         }

@@ -10,7 +10,7 @@ import com.dnnsgnzls.jetpack.R
 fun ImageView.loadImage(uri: String?, progressDrawable: CircularProgressDrawable) {
     val options = RequestOptions()
         .placeholder(progressDrawable)
-        .error(R.mipmap.ic_launcher)
+        .error(R.mipmap.dota2_symbol)
 
     Glide.with(context)
         .setDefaultRequestOptions(options)

@@ -7,7 +7,7 @@ import androidx.core.content.edit
 class Prefs {
     companion object {
 
-        private const val PREF_SAVE_TIME = "pref_save_time"
+        private const val PREF_SAVE_TIME = "last_save_time"
         private var prefs: SharedPreferences? = null
 
         @Volatile
@@ -32,5 +32,7 @@ class Prefs {
 
     fun getUpdateTime() = prefs?.getLong(PREF_SAVE_TIME, 0) ?: 0
 
-    fun getCacheDuration() = prefs?.getString("pref_cache_duration", "")
+    fun getIsCachingEnabled() = prefs?.getBoolean("caching_enabled", false)
+
+//    fun getCacheTime() = prefs?.getString("cache_time", "")
 }
