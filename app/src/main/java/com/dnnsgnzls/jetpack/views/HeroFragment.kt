@@ -12,12 +12,12 @@ import com.dnnsgnzls.jetpack.databinding.FragmentHeroBinding
 import com.dnnsgnzls.jetpack.models.Hero
 import com.dnnsgnzls.jetpack.models.HeroRepository
 import com.dnnsgnzls.jetpack.models.IHeroClick
-import com.dnnsgnzls.jetpack.viewmodel.MainViewModel
+import com.dnnsgnzls.jetpack.viewmodel.HeroViewModel
 import com.dnnsgnzls.jetpack.views.adapter.HeroAdapter
 
 
 class HeroFragment : Fragment(), IHeroClick {
-    private lateinit var viewModel: MainViewModel
+    private lateinit var viewModel: HeroViewModel
     private lateinit var heroAdapter: HeroAdapter
 
     private var _binding: FragmentHeroBinding? = null
@@ -31,12 +31,12 @@ class HeroFragment : Fragment(), IHeroClick {
         class ViewModelFactory : ViewModelProvider.NewInstanceFactory() {
             @Suppress("UNCHECKED_CAST")
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return MainViewModel(activity!!.application, HeroRepository()) as T
+                return HeroViewModel(activity!!.application, HeroRepository()) as T
             }
         }
 
         // Initialize the ViewModel with a new instance of Repository
-        viewModel = ViewModelProvider(this, ViewModelFactory()).get(MainViewModel::class.java)
+        viewModel = ViewModelProvider(this, ViewModelFactory()).get(HeroViewModel::class.java)
 
         // Instantiate HeroAdapter with the viewModel's scope
         heroAdapter = HeroAdapter(arrayListOf(), this, viewModel)

@@ -15,7 +15,7 @@ import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class MainViewModel(
+class HeroViewModel(
     application: Application,
     private val heroRepository: HeroRepository
 ) : BaseViewModel(application) {

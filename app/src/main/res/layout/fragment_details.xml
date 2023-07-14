@@ -1,23 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".views.DetailsFragment">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:id="@+id/testTextView"
+    <data>
+
+        <variable
+            name="hero"
+            type="com.dnnsgnzls.jetpack.models.Hero" />
+
+        <variable
+            name="palette"
+            type="com.dnnsgnzls.jetpack.models.HeroPalette" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:background="@{palette.color}">
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@mipmap/ic_launcher" />
+        <ImageView
+            android:id="@+id/heroFullImage"
+            android:layout_width="0dp"
+            android:layout_height="240dp"
+            android:imageUrl="@{hero.fullImageUrl}"
+            android:scaleType="centerCrop"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@tools:sample/backgrounds/scenic" />
 
+        <TextView
+            android:id="@+id/heroName"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="monospace"
+            android:gravity="center"
+            android:text="@{hero.localizedName}"
+            android:textAlignment="center"
+            android:textAllCaps="false"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/heroFullImage"
+            tools:text="Phantom Assasin" />
 
-</FrameLayout>
+        <TextView
+            android:id="@+id/heroMainAttribute"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:fontFamily="monospace"
+            android:gravity="center"
+            android:text="@{hero.primaryAttribute.value}"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            app:layout_constraintBaseline_toBaselineOf="@+id/heroRoles"
+            app:layout_constraintEnd_toStartOf="@+id/heroRoles"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="Agility" />
+
+        <TextView
+            android:id="@+id/heroRoles"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:fontFamily="monospace"
+            android:gravity="center"
+            android:text="@{hero.printableRoles}"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight="2"
+            app:layout_constraintStart_toEndOf="@+id/heroMainAttribute"
+            app:layout_constraintTop_toBottomOf="@+id/heroName"
+            tools:text="Nuker" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="20dp" />
+
+        <ImageView
+            android:id="@+id/heroIcon"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="-40dp"
+            android:background="@drawable/circular_border"
+            android:imageUrl="@{hero.iconUrl}"
+            android:scaleType="centerCrop"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/heroFullImage"
+            tools:src="@tools:sample/avatars" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
