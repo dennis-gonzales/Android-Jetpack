@@ -2,12 +2,19 @@ package com.dnnsgnzls.jetpack.views
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
+import com.dnnsgnzls.jetpack.R
 import com.dnnsgnzls.jetpack.databinding.FragmentHeroBinding
 import com.dnnsgnzls.jetpack.models.Hero
 import com.dnnsgnzls.jetpack.models.HeroRepository
@@ -16,8 +23,9 @@ import com.dnnsgnzls.jetpack.viewmodel.HeroViewModel
 import com.dnnsgnzls.jetpack.views.adapter.HeroAdapter
 
 
-class HeroFragment : Fragment(), IHeroClick {
+class HeroFragment : Fragment(), IHeroClick, MenuProvider {
     private lateinit var viewModel: HeroViewModel
+    private lateinit var navController: NavController
     private lateinit var heroAdapter: HeroAdapter
 
     private var _binding: FragmentHeroBinding? = null
@@ -31,7 +39,7 @@ class HeroFragment : Fragment(), IHeroClick {
         class ViewModelFactory : ViewModelProvider.NewInstanceFactory() {
             @Suppress("UNCHECKED_CAST")
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return HeroViewModel(activity!!.application, HeroRepository()) as T
+                return HeroViewModel(requireActivity().application, HeroRepository()) as T
             }
         }
 
@@ -56,7 +64,15 @@ class HeroFragment : Fragment(), IHeroClick {
         return view
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        navController = findNavController()
+    }
+
     private fun initializeViews() {
+        // Add Menu Provider
+        requireActivity().addMenuProvider(this, viewLifecycleOwner)
+
         binding.heroList.apply {
             adapter = heroAdapter
             setHasFixedSize(true)
@@ -93,6 +109,21 @@ class HeroFragment : Fragment(), IHeroClick {
 
     override fun onClick(view: View, hero: Hero) {
         val action = HeroFragmentDirections.actionHeroFragmentToDetailsFragment(hero.id)
-        findNavController().navigate(action)
+        navController.navigate(action)
     }
+
+    override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+        menuInflater.inflate(R.menu.main_menu, menu)
+    }
+
+    override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+        when (menuItem.itemId) {
+            R.id.preferences_menu -> navController.navigate(
+                HeroFragmentDirections
+                    .actionHeroFragmentToSettingsFragment()
+            )
+        }
+        return true
+    }
+
 }
