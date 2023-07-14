@@ -10,8 +10,10 @@ import com.dnnsgnzls.jetpack.util.Prefs
 import com.dnnsgnzls.jetpack.util.hasElapsed
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.observers.DisposableSingleObserver
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MainViewModel(
     application: Application,
@@ -79,9 +81,11 @@ class MainViewModel(
                 ensureActive()
 
                 val dao = HeroDatabase(getApplication()).heroDao()
-
                 val heroList = dao.getAll()
-                updateHeroList(heroList)
+
+                withContext(Dispatchers.Main) {
+                    updateHeroList(heroList)
+                }
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -102,9 +106,11 @@ class MainViewModel(
 
                 dao.deleteAll()
                 dao.insertAll(heroList)
-                updateHeroList(heroList)
 
-                prefs.saveUpdateTime(System.nanoTime())
+                withContext(Dispatchers.Main) {
+                    updateHeroList(heroList)
+                    prefs.saveUpdateTime(System.nanoTime())
+                }
             } catch (e: Exception) {
                 e.printStackTrace()
             }
