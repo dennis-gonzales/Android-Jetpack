@@ -3,6 +3,7 @@ package com.dnnsgnzls.jetpack.models
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.dnnsgnzls.jetpack.common.constants
 import com.dnnsgnzls.jetpack.models.enums.AttackType
 import com.dnnsgnzls.jetpack.models.enums.ImageType
 import com.dnnsgnzls.jetpack.models.enums.PrimaryAttribute
@@ -42,7 +43,7 @@ data class Hero(
         }
 
         // Move the api string to constants
-        return "https://api.opendota.com/apps/dota2/images/heroes/${name.removePrefix("npc_dota_hero_")}_${typeName}.png"
+        return "${constants.heroImagesPath}/${name.removePrefix("npc_dota_hero_")}_${typeName}.png"
     }
 
     val fullImageUrl: String
@@ -51,13 +52,8 @@ data class Hero(
     val iconUrl: String
         get() = getImageUrl(ImageType.ICON)
 
-    fun getDescription(stringFormat: String): String {
-        return String.format(
-            stringFormat,
-            attackType.value,
-            primaryAttribute.value,
-            roles.joinToString(", ")
-        )
-    }
+    val printableRoles: String
+        get() = roles.joinToString(", ")
+
 }
 
