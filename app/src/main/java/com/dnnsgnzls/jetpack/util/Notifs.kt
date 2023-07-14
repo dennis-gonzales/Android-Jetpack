@@ -35,7 +35,7 @@ class Notifs(val context: Context) {
         )
 
         val logo = BitmapFactory.decodeResource(context.resources, R.drawable.dota2_logo)
-        val symbol = BitmapFactory.decodeResource(context.resources, R.drawable.dota2_symbol)
+        val symbol = BitmapFactory.decodeResource(context.resources, R.mipmap.dota2_symbol_foreground)
         val nullIcon: Bitmap? = null
 
         val notification = NotificationCompat.Builder(context, CHANNEL_ID)
@@ -48,6 +48,7 @@ class Notifs(val context: Context) {
                 NotificationCompat.BigPictureStyle()
                     .bigPicture(logo)
                     .bigLargeIcon(nullIcon)
+                    .setSummaryText("Let's go play 5v5 now!")
             )
             .setContentIntent(pendingIntent)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
