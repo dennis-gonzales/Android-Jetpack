@@ -119,10 +119,6 @@ class DetailsFragment : Fragment(), MenuProvider {
 
     override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
         when (menuItem.itemId) {
-            R.id.action_send_sms -> {
-
-            }
-
             R.id.action_share -> {
                 val intent = Intent(Intent.ACTION_SEND)
                 intent.type = "text/plain"
