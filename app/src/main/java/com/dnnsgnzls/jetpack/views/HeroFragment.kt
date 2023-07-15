@@ -19,6 +19,7 @@ import com.dnnsgnzls.jetpack.databinding.FragmentHeroBinding
 import com.dnnsgnzls.jetpack.models.Hero
 import com.dnnsgnzls.jetpack.models.HeroRepository
 import com.dnnsgnzls.jetpack.models.IHeroClick
+import com.dnnsgnzls.jetpack.util.Notifs
 import com.dnnsgnzls.jetpack.viewmodel.HeroViewModel
 import com.dnnsgnzls.jetpack.views.adapter.HeroAdapter
 
@@ -122,6 +123,8 @@ class HeroFragment : Fragment(), IHeroClick, MenuProvider {
                 HeroFragmentDirections
                     .actionHeroFragmentToSettingsFragment()
             )
+
+            R.id.notification_menu -> Notifs(requireActivity()).createNofitication()
         }
         return true
     }
