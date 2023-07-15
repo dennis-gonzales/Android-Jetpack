@@ -4,4 +4,6 @@
 
     <string name="preferences">Preferences</string>
     <string name="send_test_notification">Send test notification</string>
+    <string name="send_sms">Send SMS</string>
+    <string name="share">Share</string>
 </resources>
