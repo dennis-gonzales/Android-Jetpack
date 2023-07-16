@@ -3,6 +3,8 @@ package com.dnnsgnzls.jetpack.viewmodel
 import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.dnnsgnzls.jetpack.models.Hero
 import com.dnnsgnzls.jetpack.models.HeroDatabase
 import com.dnnsgnzls.jetpack.models.HeroRepository
@@ -125,5 +127,20 @@ class HeroViewModel(
     override fun onCleared() {
         super.onCleared()
         disposable.clear()
+    }
+}
+
+// Prefer Dependency Injection - Dagger or Hilt
+class HeroViewModelFactory(
+    private val application: Application,
+    private val repository: HeroRepository
+) : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(HeroViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            return HeroViewModel(application, repository) as T
+        }
+
+        throw IllegalArgumentException("Unknown ViewModel class")
     }
 }

@@ -9,8 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.dnnsgnzls.jetpack.R
@@ -20,35 +19,24 @@ import com.dnnsgnzls.jetpack.models.HeroRepository
 import com.dnnsgnzls.jetpack.models.IHeroClick
 import com.dnnsgnzls.jetpack.util.Notifs
 import com.dnnsgnzls.jetpack.viewmodel.HeroViewModel
+import com.dnnsgnzls.jetpack.viewmodel.HeroViewModelFactory
 import com.dnnsgnzls.jetpack.views.adapter.HeroAdapter
 
 
 class HeroFragment : Fragment(), IHeroClick, MenuProvider {
-    private lateinit var viewModel: HeroViewModel
+    private val viewModel: HeroViewModel by viewModels {
+        HeroViewModelFactory(requireActivity().application, HeroRepository())
+    }
+
+    private val heroAdapter: HeroAdapter by lazy {
+        HeroAdapter(arrayListOf(), this, viewModel)
+    }
+
     private lateinit var navController: NavController
-    private lateinit var heroAdapter: HeroAdapter
 
     private var _binding: FragmentHeroBinding? = null
     private val binding
         get() = _binding!!
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        // Prefer Dependency Injection - Dagger or Hilt
-        class ViewModelFactory : ViewModelProvider.NewInstanceFactory() {
-            @Suppress("UNCHECKED_CAST")
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return HeroViewModel(requireActivity().application, HeroRepository()) as T
-            }
-        }
-
-        // Initialize the ViewModel with a new instance of Repository
-        viewModel = ViewModelProvider(this, ViewModelFactory()).get(HeroViewModel::class.java)
-
-        // Instantiate HeroAdapter with the viewModel's scope
-        heroAdapter = HeroAdapter(arrayListOf(), this, viewModel)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -58,15 +46,12 @@ class HeroFragment : Fragment(), IHeroClick, MenuProvider {
         _binding = FragmentHeroBinding.inflate(inflater, container, false)
         val view = binding.root
 
+        navController = findNavController()
+
         initializeViews()
         observeViewModels()
 
         return view
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        navController = findNavController()
     }
 
     private fun initializeViews() {

@@ -12,10 +12,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.lang.Exception
 
-class DetailsViewModel(
-    application: Application,
-    private val heroRepository: HeroRepository
-) :
+class DetailsViewModel(application: Application) :
     BaseViewModel(application) {
     private val _heroDetails = MutableLiveData<Hero>()
 
@@ -33,7 +30,7 @@ class DetailsViewModel(
                 withContext(Dispatchers.Main) {
                     _heroDetails.value = hero
                 }
-            } catch(e: Exception) {
+            } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
