@@ -12,7 +12,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.dnnsgnzls.jetpack.R
 import com.dnnsgnzls.jetpack.databinding.FragmentHeroBinding
@@ -129,4 +128,8 @@ class HeroFragment : Fragment(), IHeroClick, MenuProvider {
         return true
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }

@@ -134,4 +134,9 @@ class DetailsFragment : Fragment(), MenuProvider {
 
         return true
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }
