@@ -129,10 +129,12 @@ class DetailsFragment : Fragment(), MenuProvider {
                 )
                 intent.putExtra(Intent.EXTRA_STREAM, hero.fullImageUrl)
                 startActivity(Intent.createChooser(intent, "Share with"))
+
+                return true
             }
         }
 
-        return true
+        return false
     }
 
     override fun onDestroyView() {
