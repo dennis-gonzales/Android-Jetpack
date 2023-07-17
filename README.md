@@ -230,6 +230,17 @@ class HeroViewModel(application: Application, private val heroRepository: HeroRe
 }
 ```
 
+> **Warning**
+> **Don't pass a context or activity to a ViewModel in Android's MVVM architecture.**
+> 
+> This avoids potential memory leaks and adheres to the ViewModel's purpose: to be lifecycle-aware and not hold references to views, like Activities or Fragments.
+> A ViewModel can outlive these views, which can cause issues if it directly references them.
+> 
+> If a context is necessary, such as for database access, use the Application Context.
+> This global context isn't tied to a specific lifecycle. The subclass AndroidViewModel provides this, as it includes an Application reference.
+> This ensures the ViewModel is tied to the application's lifecycle, not an activity's.
+> With this, you get an application-scoped database, no context leaks, and no need for context handling in your ViewModel."
+
 ### Repository Pattern
 
 The Repository pattern is used to abstract away the details of data retrieval. It acts as a middleman between the different data sources (like databases and network calls) and the rest of the application. This pattern allows for cleaner and more modular code, and makes it easier to add, remove, or switch between different data sources. An example in this project is the `HeroRepository`.

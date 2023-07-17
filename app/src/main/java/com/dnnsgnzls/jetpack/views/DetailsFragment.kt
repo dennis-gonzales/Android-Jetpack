@@ -12,8 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -25,11 +24,11 @@ import com.dnnsgnzls.jetpack.R
 import com.dnnsgnzls.jetpack.databinding.FragmentDetailsBinding
 import com.dnnsgnzls.jetpack.models.Hero
 import com.dnnsgnzls.jetpack.models.HeroPalette
-import com.dnnsgnzls.jetpack.models.HeroRepository
 import com.dnnsgnzls.jetpack.viewmodel.DetailsViewModel
 
 class DetailsFragment : Fragment(), MenuProvider {
-    private lateinit var viewModel: DetailsViewModel
+    private val viewModel by viewModels<DetailsViewModel>()
+
     private lateinit var navController: NavController
 
     private var _binding: FragmentDetailsBinding? = null
@@ -41,19 +40,8 @@ class DetailsFragment : Fragment(), MenuProvider {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val args: DetailsFragmentArgs by navArgs()
+        val args by navArgs<DetailsFragmentArgs>()
         val heroId = args.heroId
-
-        // Prefer Dependency Injection - Dagger or Hilt
-        class ViewModelFactory : ViewModelProvider.NewInstanceFactory() {
-            @Suppress("UNCHECKED_CAST")
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return DetailsViewModel(activity!!.application, HeroRepository()) as T
-            }
-        }
-
-        // Initialize the ViewModel with a new instance of Repository
-        viewModel = ViewModelProvider(this, ViewModelFactory()).get(DetailsViewModel::class.java)
 
         // Get the hero
         viewModel.getHero(heroId)
@@ -67,15 +55,12 @@ class DetailsFragment : Fragment(), MenuProvider {
         _binding = FragmentDetailsBinding.inflate(inflater, container, false)
         val view = binding.root
 
+        navController = findNavController()
+
         initializeViews()
-        observeVieModels()
+        observeViewModels()
 
         return view
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        navController = findNavController()
     }
 
     private fun initializeViews() {
@@ -85,7 +70,7 @@ class DetailsFragment : Fragment(), MenuProvider {
         // TODO: Check if hero is not initialized and handle gracefully
     }
 
-    private fun observeVieModels() {
+    private fun observeViewModels() {
         viewModel.heroDetails.observe(viewLifecycleOwner) { heroDetails ->
             hero = heroDetails
             binding.hero = heroDetails

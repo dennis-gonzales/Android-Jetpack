@@ -1,8 +1,12 @@
 package com.dnnsgnzls.jetpack.viewmodel
 
 import android.app.Application
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import com.dnnsgnzls.jetpack.R
 import com.dnnsgnzls.jetpack.models.Hero
 import com.dnnsgnzls.jetpack.models.HeroDatabase
 import com.dnnsgnzls.jetpack.models.HeroRepository
@@ -16,7 +20,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class HeroViewModel(
-    application: Application,
+    private val application: Application,
     private val heroRepository: HeroRepository
 ) : BaseViewModel(application) {
 
@@ -25,17 +29,22 @@ class HeroViewModel(
 
     private val _heroList = MutableLiveData<List<Hero>>()
     private val _loading = MutableLiveData<Boolean>()
+    private val _error = MutableLiveData<String>()
 
     val heroList: LiveData<List<Hero>>
         get() = _heroList
     val loading: LiveData<Boolean>
         get() = _loading
+    val error: LiveData<String>
+        get() = _error
 
     // Nanoseconds
     private val refreshTime = 1 * 15 * 1000 * 1000 * 1000L // 15 seconds
 
     fun refresh(hardRefresh: Boolean = false) {
         fun isHardRefreshOrCachingDisabled(): Boolean {
+            _error.value = ""
+
             val isCachingEnabled = prefs.getIsCachingEnabled()
             return hardRefresh || isCachingEnabled == false
         }
@@ -63,11 +72,15 @@ class HeroViewModel(
         val heroListObserver = object : DisposableSingleObserver<List<Hero>>() {
             override fun onSuccess(heroList: List<Hero>) {
                 storeToDatabase(heroList)
+                _error.value = ""
             }
 
             override fun onError(e: Throwable) {
                 _loading.value = false
+                _error.value = e.message
                 e.printStackTrace()
+
+                fetchFromDatabase(asFallback = true)
             }
         }
 
@@ -78,7 +91,7 @@ class HeroViewModel(
         )
     }
 
-    private fun fetchFromDatabase() {
+    private fun fetchFromDatabase(asFallback: Boolean = false) {
         _loading.value = true
 
         launch {
@@ -88,11 +101,29 @@ class HeroViewModel(
                 val dao = HeroDatabase(getApplication()).heroDao()
                 val heroList = dao.getAll()
 
+                if (asFallback) {
+                    val errorMsg =
+                        if (heroList.isEmpty()) R.string.cache_was_empty
+                        else R.string.successfully_loaded_cache
+
+                    Toast.makeText(
+                        application,
+                        application.getString(errorMsg),
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+
                 withContext(Dispatchers.Main) {
                     updateHeroList(heroList)
                 }
+
             } catch (e: Exception) {
                 e.printStackTrace()
+                Toast.makeText(
+                    application,
+                    application.getString(R.string.failed_to_fetch_db),
+                    Toast.LENGTH_LONG
+                ).show()
             }
         }
     }
@@ -125,5 +156,20 @@ class HeroViewModel(
     override fun onCleared() {
         super.onCleared()
         disposable.clear()
+    }
+}
+
+// Prefer Dependency Injection - Dagger or Hilt
+class HeroViewModelFactory(
+    private val application: Application,
+    private val repository: HeroRepository
+) : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(HeroViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            return HeroViewModel(application, repository) as T
+        }
+
+        throw IllegalArgumentException("Unknown ViewModel class")
     }
 }
