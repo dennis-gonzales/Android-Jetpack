@@ -27,7 +27,7 @@ import com.dnnsgnzls.jetpack.models.HeroPalette
 import com.dnnsgnzls.jetpack.viewmodel.DetailsViewModel
 
 class DetailsFragment : Fragment(), MenuProvider {
-    private val viewModel: DetailsViewModel by viewModels()
+    private val viewModel by viewModels<DetailsViewModel>()
 
     private lateinit var navController: NavController
 
@@ -40,7 +40,7 @@ class DetailsFragment : Fragment(), MenuProvider {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val args: DetailsFragmentArgs by navArgs()
+        val args by navArgs<DetailsFragmentArgs>()
         val heroId = args.heroId
 
         // Get the hero
@@ -58,7 +58,7 @@ class DetailsFragment : Fragment(), MenuProvider {
         navController = findNavController()
 
         initializeViews()
-        observeVieModels()
+        observeViewModels()
 
         return view
     }
@@ -70,7 +70,7 @@ class DetailsFragment : Fragment(), MenuProvider {
         // TODO: Check if hero is not initialized and handle gracefully
     }
 
-    private fun observeVieModels() {
+    private fun observeViewModels() {
         viewModel.heroDetails.observe(viewLifecycleOwner) { heroDetails ->
             hero = heroDetails
             binding.hero = heroDetails

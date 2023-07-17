@@ -24,7 +24,7 @@ import com.dnnsgnzls.jetpack.views.adapter.HeroAdapter
 
 
 class HeroFragment : Fragment(), IHeroClick, MenuProvider {
-    private val viewModel: HeroViewModel by viewModels {
+    private val viewModel by viewModels<HeroViewModel> {
         HeroViewModelFactory(requireActivity().application, HeroRepository())
     }
 
