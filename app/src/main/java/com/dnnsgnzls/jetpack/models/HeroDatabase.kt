@@ -33,6 +33,6 @@ abstract class HeroDatabase : RoomDatabase() {
             context.applicationContext,
             HeroDatabase::class.java,
             DATABASE_NAME
-        ).build()
+        ).fallbackToDestructiveMigration().build()
     }
 }
