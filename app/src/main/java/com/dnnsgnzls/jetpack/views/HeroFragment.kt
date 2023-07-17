@@ -58,6 +58,8 @@ class HeroFragment : Fragment(), IHeroClick, MenuProvider {
         // Add Menu Provider
         requireActivity().addMenuProvider(this, viewLifecycleOwner)
 
+        binding.errorText.isSelected = true
+
         binding.heroList.apply {
             adapter = heroAdapter
             setHasFixedSize(true)
@@ -85,6 +87,13 @@ class HeroFragment : Fragment(), IHeroClick, MenuProvider {
         viewModel.loading.observe(viewLifecycleOwner) { loading ->
             binding.loadingHeroes.apply {
                 visibility = if (loading) View.VISIBLE else View.GONE
+            }
+        }
+
+        viewModel.error.observe(viewLifecycleOwner) { error ->
+            binding.errorText.apply {
+                text = error
+                visibility = if (error.isNullOrEmpty()) View.GONE else View.VISIBLE
             }
         }
 

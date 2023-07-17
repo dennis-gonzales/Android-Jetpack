@@ -6,4 +6,8 @@
     <string name="send_test_notification">Send test notification</string>
     <string name="send_sms">Send SMS</string>
     <string name="share">Share</string>
+    <string name="lorem_ipsum_short">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</string>
+    <string name="cache_was_empty">There was an error retrieving data. Trying to load data from the cache but was empty.</string>
+    <string name="successfully_loaded_cache">Showing data from cache as fallback.</string>
+    <string name="failed_to_fetch_db">Failed to fetch data from database.</string>
 </resources>
