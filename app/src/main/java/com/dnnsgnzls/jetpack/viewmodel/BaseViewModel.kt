@@ -20,7 +20,9 @@ import kotlin.coroutines.CoroutineContext
  * This ensures the ViewModel is tied to the application's lifecycle, not an activity's. With this, you get an application-scoped database, no context leaks, and no need for context handling in your ViewModel."
  */
 abstract class BaseViewModel(application: Application): AndroidViewModel(application), CoroutineScope {
-
+    // It is more recommended to use `viewModelScope` which is provided by the `lifecycle-viewmodel-ktx` library for coroutine work in a ViewModel.
+    // This `viewModelScope` is a `CoroutineScope` tied to the ViewModel, which gets cancelled when the ViewModel is cleared. It makes the coroutine handling in ViewModel safer and more concise.
+    // We've used `Job` here for educational purposes only.
     private val job = Job()
 
     override val coroutineContext: CoroutineContext

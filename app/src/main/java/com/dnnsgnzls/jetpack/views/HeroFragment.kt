@@ -15,18 +15,16 @@ import androidx.navigation.fragment.findNavController
 import com.dnnsgnzls.jetpack.R
 import com.dnnsgnzls.jetpack.databinding.FragmentHeroBinding
 import com.dnnsgnzls.jetpack.models.Hero
-import com.dnnsgnzls.jetpack.models.HeroRepository
 import com.dnnsgnzls.jetpack.models.IHeroClick
 import com.dnnsgnzls.jetpack.util.Notifs
 import com.dnnsgnzls.jetpack.viewmodel.HeroViewModel
-import com.dnnsgnzls.jetpack.viewmodel.HeroViewModelFactory
 import com.dnnsgnzls.jetpack.views.adapter.HeroAdapter
+import dagger.hilt.android.AndroidEntryPoint
 
 
+@AndroidEntryPoint
 class HeroFragment : Fragment(), IHeroClick, MenuProvider {
-    private val viewModel by viewModels<HeroViewModel> {
-        HeroViewModelFactory(requireActivity().application, HeroRepository())
-    }
+    private val viewModel by viewModels<HeroViewModel>()
 
     private val heroAdapter: HeroAdapter by lazy {
         HeroAdapter(arrayListOf(), this, viewModel)

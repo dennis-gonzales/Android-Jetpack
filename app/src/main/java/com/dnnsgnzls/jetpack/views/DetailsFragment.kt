@@ -25,7 +25,9 @@ import com.dnnsgnzls.jetpack.databinding.FragmentDetailsBinding
 import com.dnnsgnzls.jetpack.models.Hero
 import com.dnnsgnzls.jetpack.models.HeroPalette
 import com.dnnsgnzls.jetpack.viewmodel.DetailsViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class DetailsFragment : Fragment(), MenuProvider {
     private val viewModel by viewModels<DetailsViewModel>()
 
