@@ -4,16 +4,19 @@ import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.dnnsgnzls.jetpack.models.Hero
-import com.dnnsgnzls.jetpack.models.HeroDatabase
-import com.dnnsgnzls.jetpack.models.HeroRepository
+import com.dnnsgnzls.jetpack.models.HeroDao
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.lang.Exception
+import javax.inject.Inject
 
-class DetailsViewModel(application: Application) :
-    BaseViewModel(application) {
+@HiltViewModel
+class DetailsViewModel @Inject constructor(
+    private val heroDao: HeroDao,
+    application: Application
+) : BaseViewModel(application) {
     private val _heroDetails = MutableLiveData<Hero>()
 
     val heroDetails: LiveData<Hero>
@@ -23,9 +26,7 @@ class DetailsViewModel(application: Application) :
         launch {
             try {
                 ensureActive()
-
-                val dao = HeroDatabase(getApplication()).heroDao()
-                val hero = dao.get(heroId)
+                val hero = heroDao.get(heroId)
 
                 withContext(Dispatchers.Main) {
                     _heroDetails.value = hero

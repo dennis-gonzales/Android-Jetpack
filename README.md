@@ -257,17 +257,106 @@ class HeroRepository(private val scheduler: Scheduler = Schedulers.newThread()) 
 }
 ```
 
-### Dependency Injection
+### Dependency Injection with Hilt
 
-While not implemented with a specific library like Dagger or Hilt, this project utilizes the principle of Dependency Injection. This principle is most evident in how the `HeroRepository` is passed as a parameter when instantiating `HeroViewModel`.
+Hilt is a DI library for Android that reduces the boilerplate of doing manual dependency injection in your project. Hilt is built on top of the popular DI library Dagger to benefit from the compile-time correctness, runtime performance, scalability, and Android Studio support that Dagger provides.
+
+#### Hilt Application
+
+To use Hilt, we need to annotate an Application instance with `@HiltAndroidApp`. Hilt will generate a base class that we can use to access the application-level dependencies.
 
 ```kotlin
-viewModel = ViewModelProvider(this, ViewModelFactory()).get(HeroViewModel::class.java)
+@HiltAndroidApp
+class HiltApplication : Application()
 ```
 
-This allows for better modularity, easier testing, and reduced coupling between classes.
+#### Providing Dependencies
 
-Absolutely, this is another good example of Kotlin's extension functions and data binding in action.
+We can provide dependencies via Hilt modules. A module is a class that is annotated with `@Module`. All methods inside the module that are going to provide dependencies should be annotated with `@Provides`. In this project, we provide `HeroDao` and `HeroRepository` in two separate modules: `DatabaseModule` and `RepositoryModule`.
+
+```kotlin
+@Module
+@InstallIn(SingletonComponent::class)
+object DatabaseModule {
+    @Singleton
+    @Provides
+    fun provideHeroDao(@ApplicationContext context: Context): HeroDao {
+        return HeroDatabase(context).heroDao()
+    }
+}
+```
+
+```kotlin
+@Module
+@InstallIn(SingletonComponent::class)
+object RepositoryModule {
+    @Singleton
+    @Provides
+    fun provideScheduler(): Scheduler = Schedulers.newThread()
+
+    @Singleton
+    @Provides
+    fun provideHeroRepository(scheduler: Scheduler): HeroRepository = HeroRepository(scheduler)
+}
+```
+
+#### Injecting Dependencies
+
+Once dependencies are provided, they can be injected into classes. Hilt can provide dependencies to Android classes that have the `@AndroidEntryPoint` annotation. We've injected the `HeroDao` into `DetailsViewModel` and `HeroRepository` into `HeroViewModel`.
+
+```kotlin
+@HiltViewModel
+class DetailsViewModel @Inject constructor(
+    private val heroDao: HeroDao,
+    application: Application
+) : BaseViewModel(application) {
+    ...
+}
+```
+
+```kotlin
+@HiltViewModel
+class HeroViewModel @Inject constructor (
+    private val heroRepository: HeroRepository,
+    private val application: Application
+) : BaseViewModel(application) {
+    ...
+}
+```
+
+In our `DetailsFragment`, `HeroFragment`, and `MainActivity`, we've used the `by viewModels<ViewModel>` property delegate to get an instance of the ViewModel.
+
+```kotlin
+@AndroidEntryPoint
+class DetailsFragment : Fragment(), MenuProvider {
+    private val viewModel by viewModels<DetailsViewModel>()
+    ...
+}
+```
+
+```kotlin
+@AndroidEntryPoint
+class HeroFragment : Fragment(), IHeroClick, MenuProvider {
+    private val viewModel by viewModels<HeroViewModel>()
+   ...
+}
+```
+
+```kotlin
+@AndroidEntryPoint
+class MainActivity : AppCompatActivity() {
+    ...
+}
+```
+
+#### Benefits of Using Hilt
+
+With Hilt, we get several benefits including:
+
+- Simplified configuration
+- Reduced boilerplate
+- Improved readability
+- Increased testing capabilities.
 
 ### Data Binding & Extension Functions
 
@@ -309,38 +398,6 @@ This project uses several Android Jetpack libraries, which are a collection of l
 - **Palette**: For dynamic color extraction from images.
 
 By following these and other best practices and design patterns, this project aims to be a highly maintainable, testable, and scalable Android application.
-
-## Dependency List
-
-### build.gradle **(module: app)**
-
-1. `androidx.navigation:navigation-fragment-ktx` and `androidx.navigation:navigation-ui-ktx`: These dependencies are used for Android Jetpack's Navigation component, which helps in implementing navigation between different screens (fragments) of an app. It also includes support for deep links and safe args. It's part of Android Jetpack.
-
-2. `androidx.lifecycle:lifecycle-livedata-ktx` and `androidx.lifecycle:lifecycle-viewmodel-ktx`: These are part of the Android Jetpack's Lifecycle components which help you produce code that's easier to test and maintain. LiveData is an observable data holder class, and ViewModel allows data to survive configuration changes such as screen rotations. They are part of Android Jetpack.
-
-3. `androidx.room:room-runtime`, `androidx.room:room-ktx`, `androidx.room:room-compiler`: Room is a persistence library that provides an abstraction layer over SQLite and allows for more robust database access while harnessing the full power of SQLite. It is part of Android Jetpack.
-
-4. `androidx.core:core-ktx`, `androidx.appcompat:appcompat`, `androidx.constraintlayout:constraintlayout`, `androidx.swiperefreshlayout:swiperefreshlayout`, `androidx.palette:palette-ktx`, `androidx.preference:preference-ktx`: These are part of Android Jetpack's foundational components. They provide backwards compatibility and other features for UI design, accessibility, and data management.
-
-5. `com.google.android.material:material`: This library provides Material Design components for Android apps, allowing for UI designs that adhere to the latest Material Design specifications.
-
-6. `com.squareup.retrofit2:retrofit`, `com.squareup.retrofit2:converter-gson`, `com.squareup.retrofit2:adapter-rxjava3`: Retrofit is a type-safe HTTP client for Android and Java. The Gson converter is used for parsing JSON responses, and the RxJava adapter allows it to return RxJava 3.x types.
-
-7. `io.reactivex.rxjava3:rxandroid`, `io.reactivex.rxjava3:rxjava`: RxJava and RxAndroid are libraries for composing asynchronous and event-based programs using observable sequences. They are not part of Android Jetpack.
-
-8. `com.github.bumptech.glide:glide`: Glide is a fast and efficient image loading library for Android that wraps media decoding, memory and disk caching, and resource pooling into a simple and easy to use interface. It's not part of Android Jetpack.
-
-### build.gradle **(Project: Jetpack)**
-
-1. `androidx.navigation:navigation-safe-args-gradle-plugin`: This Gradle plugin generates simple object and builder classes for type-safe access to arguments specified for destinations and actions.
-
-2. `com.android.application`, `com.android.library`: These are Android Gradle plugins for building Android app modules and library modules.
-
-3. `org.jetbrains.kotlin.android`: This is the Kotlin Gradle plugin for Android, which allows you to write your app's code in Kotlin.
-
-4. `androidx.navigation.safeargs`: This is the safe args Gradle plugin for the Navigation component, it generates simple object and builder classes for type-safe access to arguments specified for destinations and actions. It is part of Android Jetpack.
-
-The versions of these libraries (`lifecycle_version`, `room_version`, `nav_version`) are defined in the `buildscript` section of the `build.gradle` file.
 
 ## Screenshots
 

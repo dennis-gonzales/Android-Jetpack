@@ -4,24 +4,25 @@ import android.app.Application
 import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import com.dnnsgnzls.jetpack.R
 import com.dnnsgnzls.jetpack.models.Hero
 import com.dnnsgnzls.jetpack.models.HeroDatabase
 import com.dnnsgnzls.jetpack.models.HeroRepository
 import com.dnnsgnzls.jetpack.util.Prefs
 import com.dnnsgnzls.jetpack.util.hasElapsed
+import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.observers.DisposableSingleObserver
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class HeroViewModel(
-    private val application: Application,
-    private val heroRepository: HeroRepository
+@HiltViewModel
+class HeroViewModel @Inject constructor (
+    private val heroRepository: HeroRepository,
+    private val application: Application
 ) : BaseViewModel(application) {
 
     private val prefs = Prefs(getApplication())
@@ -156,20 +157,5 @@ class HeroViewModel(
     override fun onCleared() {
         super.onCleared()
         disposable.clear()
-    }
-}
-
-// Prefer Dependency Injection - Dagger or Hilt
-class HeroViewModelFactory(
-    private val application: Application,
-    private val repository: HeroRepository
-) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(HeroViewModel::class.java)) {
-            @Suppress("UNCHECKED_CAST")
-            return HeroViewModel(application, repository) as T
-        }
-
-        throw IllegalArgumentException("Unknown ViewModel class")
     }
 }
