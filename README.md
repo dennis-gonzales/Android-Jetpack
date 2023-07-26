@@ -270,6 +270,19 @@ To use Hilt, we need to annotate an Application instance with `@HiltAndroidApp`.
 class HiltApplication : Application()
 ```
 
+The `AndroidManifest.xml` file also needs to be updated. In order to use Hilt, we need to specify the Hilt Application class as the application name in the `AndroidManifest.xml` file.
+
+```xml
+<application
+    android:name=".di.HiltApplication"
+    ...
+>
+    ...
+</application>
+```
+
+This is necessary because the Application class serves as the entry point to the application and is responsible for initializing application-level components. By declaring the custom Hilt Application class (in this case `HiltApplication`) in the AndroidManifest.xml, we are instructing the Android system to use this as the Application class when the application is launched.
+
 #### Providing Dependencies
 
 We can provide dependencies via Hilt modules. A module is a class that is annotated with `@Module`. All methods inside the module that are going to provide dependencies should be annotated with `@Provides`. In this project, we provide `HeroDao` and `HeroRepository` in two separate modules: `DatabaseModule` and `RepositoryModule`.
@@ -299,6 +312,10 @@ object RepositoryModule {
     fun provideHeroRepository(scheduler: Scheduler): HeroRepository = HeroRepository(scheduler)
 }
 ```
+
+The `@InstallIn(SingletonComponent::class)` annotation tells Hilt to install the module in the SingletonComponent, which means these provided dependencies live for the lifetime of the application. They're equivalent to application-scoped dependencies.
+
+The `@Singleton` annotation, when applied to a provider method (`@Provides` annotated method), signifies that the instance created by the method should be created only once and reused each time the dependency is required. So, when the function is called to satisfy a dependency, it will return the same instance every time during the application lifecycle.
 
 #### Injecting Dependencies
 
